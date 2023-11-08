@@ -1,0 +1,40 @@
+*.pyc
+*.gz
+*.so
+.ipynb_checkpoints/
+.DS_Store/
+.DS_Store
+
+# if we ever name a folder untracked, that would be ignored
+untracked
+# any output from discovery cluster slurm will be ignored
+slurm-*
+
+# R History files
+.Rhistory
+.Rapp.history
+
+# R Session Data files
+.RData
+
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# NodeJS
+node_modules
+package-lock.json
+
+#VS code
+.vscode
+.vscode/
