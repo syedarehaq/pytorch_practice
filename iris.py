@@ -10,15 +10,20 @@ import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 from sklearn.model_selection import train_test_split
 import torchmetrics
+from sklearn.preprocessing import StandardScaler
 # %%
 df_iris = pd.read_csv("./iris.csv")
 LE = LabelEncoder()
+sc = StandardScaler()
 df_iris['class'] = LE.fit_transform(df_iris['variety'])
 # %%
 features = df_iris[df_iris.columns[0:-2]]
 num_features  = features.shape[1]
-X = torch.tensor(np.array(features, dtype=float))
+X = np.array(features, dtype=float)
 print(X)
+sc.fit(X)
+X_std = torch.tensor(sc.transform(X))
+print(X_std)
 target = df_iris[df_iris.columns[-1]]
 y = torch.tensor(np.array(target,dtype=float))
 print(y)
@@ -26,7 +31,7 @@ num_classes = len(LE.classes_)
 # %%
 # %%
 ## Dividing into train test validation
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X_std, y, test_size=0.2, random_state=1)
 
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1) # 0.25 x 0.8 = 0.2
 # %%
@@ -47,7 +52,7 @@ model = nn.Sequential(
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.001)
 # %%
-num_epochs = 200
+num_epochs = 500
 for epoch in range(num_epochs):
     print(f"{epoch=}")
     training_loss = 0.0
